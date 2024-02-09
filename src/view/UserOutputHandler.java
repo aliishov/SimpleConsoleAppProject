@@ -15,7 +15,7 @@ public class UserOutputHandler
 {
     public static void displayMenu()
     {
-        System.out.println("===================Command Menu===================");
+        System.out.println("==============Command Menu==============");
         System.out.println("1. Add Book");
         System.out.println("2. Add Author");
         System.out.println("3. Edit Book By Id");
@@ -28,7 +28,7 @@ public class UserOutputHandler
         System.out.println("10. Get All Authors");
         System.out.println("11. Save");
         System.out.println("12. Close");
-        System.out.println("==================================================");
+        System.out.println("========================================");
         System.out.print("Enter the command number to execute: ");
     }
     //-------------------------------------------------
@@ -51,7 +51,7 @@ public class UserOutputHandler
         int id = UserInputHandler.getInt();
         if (books.getBookById(id) == null)
         {
-            System.out.print("Book with ID " + id + " not found");
+            System.out.println("Book with ID " + id + " not found");
             return;
         }
         else
@@ -69,6 +69,7 @@ public class UserOutputHandler
         System.out.print("Enter the ID of the author you want to remove: ");
         int id = UserInputHandler.getInt();
         authors.removeAuthorById(id);
+        DatabaseOperations.removeAuthorFromDatabase(String.valueOf(id));
     }
     //-------------------------------------------------
     public static void removeBook(Books books)
@@ -76,6 +77,7 @@ public class UserOutputHandler
         System.out.print("Enter the ID of the book you want to remove: ");
         int id = UserInputHandler.getInt();
         books.removeBookById(id);
+        DatabaseOperations.removeBookFromDatabase(String.valueOf(id));
     }
     //-------------------------------------------------
     public static void editAuthor(Authors authors, DatabaseOperations dbOperations) throws IOException, SQLException
@@ -127,9 +129,16 @@ public class UserOutputHandler
         System.out.println("Enter new Book release date");
         Date newYearOfIssue = UserInputHandler.getDateFromInput();
 
-        System.out.print("Enter new Book genre: ");
-        String newGenreStr = UserInputHandler.getString();
-        Genre newGenre = Genre.valueOf(newGenreStr);
+        getSetGenreMenu();
+        int genreId = 0;
+        while (genreId < 1 || genreId > 12) {
+            System.out.print("Enter a number between 1 - 12 to set the genre: ");
+            genreId = UserInputHandler.getInt();
+            if (genreId < 1 || genreId > 12) {
+                System.out.println("Invalid entry! Enter a number between 1 - 12.");
+            }
+        }
+        Genre newGenre = setGenre(genreId);
 
         Author newAuthor = createAuthorWithId();
 
@@ -151,9 +160,16 @@ public class UserOutputHandler
         System.out.print("Enter count of book pages: ");
         int pageCount = UserInputHandler.getInt();
 
-        System.out.print("Enter book genre: ");
-        String genreStr = UserInputHandler.getString();
-        Genre genre = Genre.valueOf(genreStr);
+        getSetGenreMenu();
+        int genreId = 0;
+        while (genreId < 1 || genreId > 12) {
+            System.out.print("Enter a number between 1 - 12 to set the genre: ");
+            genreId = UserInputHandler.getInt();
+            if (genreId < 1 || genreId > 12) {
+                System.out.println("Invalid entry! Enter a number between 1 - 12.");
+            }
+        }
+        Genre genre = setGenre(genreId);
 
         System.out.println("Enter release date");
         Date releaseDate = UserInputHandler.getDateFromInput();
@@ -179,5 +195,49 @@ public class UserOutputHandler
 
         return new Author(id, name, surname, birthDate);
     }
+    //-------------------------------------------------
+    public static void closeMenu()
+    {
+        System.out.println("All unsaved data wil be deleted!");
+        System.out.println("=====Choose option=====");
+        System.out.println("1. Close anyway");
+        System.out.println("2. Save and Close");
+        System.out.println("=======================");
+    }
+    //-------------------------------------------------
+    public static int close()
+    {
+        int num = 0;
+        while (num != 1 && num != 2)
+        {
+            System.out.print("Enter 1 to continue or 2 to save and exit: ");
+            num = UserInputHandler.getInt();
+            if (num != 1 && num != 2)
+                System.out.println("Invalid entry! Enter 1 or 2.");
+        }
+        return num;
+    }
+    //-------------------------------------------------
+    private static void getSetGenreMenu()
+    {
+        System.out.println("==============Genre Menu==============");
+        System.out.println("1. Novel");
+        System.out.println("2. Mystery");
+        System.out.println("3. Thriller");
+        System.out.println("4. Fantasy");
+        System.out.println("5. ScienceFiction");
+        System.out.println("6. Horror");
+        System.out.println("7. HistoricalNovel");
+        System.out.println("8. PopularScience");
+        System.out.println("9. Classics");
+        System.out.println("10. Poetry");
+        System.out.println("11. BiographiesAndMemoirs");
+        System.out.println("12. PsychologicalNovel");
+        System.out.println("========================================");
+    }
+    //-------------------------------------------------
+    private static Genre setGenre(int id)
+    { return Genre.getGenreById(id); }
+    //-------------------------------------------------
 }
 

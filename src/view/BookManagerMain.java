@@ -77,7 +77,14 @@ public class BookManagerMain
                     dbOperations.saveBooksToDatabase(books.getBooksList());
                     break;
                 case 12:
-                    return;
+                    UserOutputHandler.closeMenu();
+                    if (UserOutputHandler.close() == 2)
+                    {
+                        dbOperations.saveBooksToDatabase(books.getBooksList());
+                        return;
+                    }
+                    else
+                        return;
                 default:
                     System.out.println("Invalid Entry! Please try again.");
                     break;

@@ -14,6 +14,7 @@ public enum Genre
     Poetry("Poetry",10),
     BiographiesAndMemoirs("BiographiesAndMemoirs",11),
     PsychologicalNovel("PsychologicalNovel",12);
+
     //-------------------------------------------------
     private final int id;
     private final String name;
@@ -25,8 +26,13 @@ public enum Genre
         this.id = id;
     }
     //-------------------------------------------------
-    public int getId()
-    { return id; }
+    public static Genre getGenreById(int id)
+    {
+        for (Genre genre : Genre.values())
+            if (genre.id == id)
+                return genre;
+        return null;
+    }
     //-------------------------------------------------
     @Override
     public String toString()

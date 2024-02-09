@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class DatabaseOperations {
-    private Connection connection;
+    private static Connection connection;
     //--------------------------------------------------------------------------
     public DatabaseOperations()
     {
@@ -43,7 +43,8 @@ public class DatabaseOperations {
         }
     }
     //--------------------------------------------------------------------------
-    public void saveBooksToDatabase(Set<Book> books) {
+    public void saveBooksToDatabase(Set<Book> books)
+    {
         try {
             for (Book book : books)
             {
@@ -148,25 +149,23 @@ public class DatabaseOperations {
         return authors;
     }
     //--------------------------------------------------------------------------
-    public void removeAllBooksFromDatabase() {
-        try (Connection connection = DatabaseConnection.getConnection()) {
+    public static void removeBookFromDatabase(String id) {
+        try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("DELETE FROM Books");
-            System.out.println("All books removed from the database.");
+            statement.executeUpdate("DELETE FROM Books where book_id = " + id);
+            System.out.println("Book with ID " + id + " removed from the database.");
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error while removing books from the database.");
+            System.out.println("Book with ID" + id + " not exist database.");
         }
     }
     //--------------------------------------------------------------------------
-    public void removeAllAuthorsFromDatabase() {
-        try (Connection connection = DatabaseConnection.getConnection()) {
+    public static void removeAuthorFromDatabase(String id) {
+        try {
             Statement statement = connection.createStatement();
-            statement.executeUpdate("DELETE FROM Authors");
-            System.out.println("All authors removed from the database.");
+            statement.executeUpdate("DELETE FROM Authors where author_id = " + id);
+            System.out.println("Author with ID " + id + " removed from the database.");
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error while removing authors from the database.");
+            System.out.println("Author with ID " + id + " not exist database.");
         }
     }
     //--------------------------------------------------------------------------

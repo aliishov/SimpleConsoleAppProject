@@ -22,12 +22,18 @@ public class UserInputHandler {
     //-------------------------------------------------
     public static int getInt()
     {
-        try {
-            return Integer.parseInt(reader.readLine());
-        } catch (IOException | NumberFormatException e) {
-            System.out.print("Invalid entry. Please enter a number:");
-            return 0;
+        int i = 0;
+        boolean isValid = false;
+        while (!isValid)
+        {
+            try {
+                i = Integer.parseInt(reader.readLine());
+                isValid = true;
+            } catch (IOException | NumberFormatException e) {
+                System.out.print("Invalid entry.");
+            }
         }
+        return i;
     }
     //-------------------------------------------------
     public static Date getDateFromInput() throws IOException
